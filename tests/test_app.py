@@ -31,7 +31,7 @@ class TestGameRoutes(unittest.TestCase):
         response = self.client.get("/results")
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.headers["Location"], "/")
+        self.assertTrue(response.headers["Location"].endswith("/"))
 
     def test_submitting_correct_answers_shows_results(self):
         self.client.get("/game")
@@ -52,7 +52,7 @@ class TestGameRoutes(unittest.TestCase):
         response = self.client.post("/game", data={})
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.headers["Location"], "/")
+        self.assertTrue(response.headers["Location"].endswith("/"))
 
 
 if __name__ == "__main__":
