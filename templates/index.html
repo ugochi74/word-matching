@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Practise vocabulary with fresh words, difficulty levels, and timed rounds.">
+    <meta name="description" content="Practise vocabulary with fresh words, difficulty levels, streaks, and themed rounds.">
     <title>Word Match | Learn as You Play</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
@@ -16,14 +16,14 @@
         <div class="hero-copy">
             <p class="eyebrow">LEARN • MATCH • LEVEL UP</p>
             <h1>Make your next word your <span>best one.</span></h1>
-            <p class="intro">A quick vocabulary challenge with fresh words, a ticking clock, and levels that grow with your confidence. Play again to discover something new.</p>
+            <p class="intro">Pick a topic, beat the clock, build a streak, and try to beat your personal best. Every round is a new chance to grow.</p>
             <div class="hero-actions">
-                <a class="button button-primary" href="{{ url_for('game', difficulty='normal') }}">Start playing <span aria-hidden="true">→</span></a>
+                <a class="button button-primary" href="#choose-game">Choose your challenge <span aria-hidden="true">→</span></a>
                 <span class="quiet-note">Free to play · No account needed</span>
             </div>
             <div class="mini-stats">
                 <div><strong>{{ word_count }}</strong><span>vocabulary words in the pool</span></div>
-                <div><strong>3</strong><span>levels to master</span></div>
+                <div><strong>3</strong><span>topics to explore</span></div>
             </div>
         </div>
         <section class="preview-card" aria-label="Example word match">
@@ -31,16 +31,33 @@
             <p class="preview-caption">Every round brings a fresh mix</p>
             <div class="preview-word">Curious <span>01</span></div>
             <div class="preview-definition"><span class="definition-icon">A</span><span>Eager to learn or know something.</span><span class="check-mark">✓</span></div>
-            <div class="preview-footer"><span>Beat your best score.</span><span aria-hidden="true">✦</span></div>
+            <div class="preview-footer"><span>Build your streak. Beat your best.</span><span aria-hidden="true">✦</span></div>
         </section>
     </main>
-    <section class="how-section page-width">
-        <p class="eyebrow">CHOOSE YOUR VIBE</p>
-        <h2>How brave are you feeling?</h2>
-        <div class="steps-grid difficulty-grid">
-            <a class="step-card difficulty-card" href="{{ url_for('game', difficulty='easy') }}"><span class="step-number">01 · WARM UP</span><h3>Easy</h3><p>5 words · 60 seconds</p><span class="difficulty-cta">Build your confidence →</span></a>
-            <a class="step-card difficulty-card featured-level" href="{{ url_for('game', difficulty='normal') }}"><span class="step-number">02 · FIND YOUR FLOW</span><h3>Normal</h3><p>8 words · 75 seconds</p><span class="difficulty-cta">Start a challenge →</span></a>
-            <a class="step-card difficulty-card" href="{{ url_for('game', difficulty='challenge') }}"><span class="step-number">03 · GO FOR IT</span><h3>Challenge</h3><p>10 words · 90 seconds</p><span class="difficulty-cta">Test your skills →</span></a>
+    <section class="how-section page-width" id="choose-game">
+        <p class="eyebrow">MAKE IT YOURS</p>
+        <h2>Choose your next round</h2>
+        <form class="game-choice-form" action="{{ url_for('game') }}" method="get">
+            <label for="category-choice">Pick a topic
+                <select id="category-choice" name="category">
+                    {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label for="difficulty-choice">Choose a level
+                <select id="difficulty-choice" name="difficulty">
+                    <option value="easy">Easy · 5 words · 60 seconds</option>
+                    <option value="normal" selected>Normal · 8 words · 75 seconds</option>
+                    <option value="challenge">Challenge · 10 words · 90 seconds</option>
+                </select>
+            </label>
+            <button class="button button-primary" type="submit">Let's play →</button>
+        </form>
+        <div class="steps-grid category-grid">
+            <article class="step-card"><span class="step-number">01 · WORD POWER</span><h3>Everyday English</h3><p>Useful vocabulary for conversations and everyday life.</p></article>
+            <article class="step-card"><span class="step-number">02 · DISCOVER</span><h3>Science</h3><p>Explore nature, space, energy, and living things.</p></article>
+            <article class="step-card"><span class="step-number">03 · BUILD</span><h3>Technology</h3><p>Learn words from computers, the web, and digital tools.</p></article>
         </div>
     </section>
     <footer class="site-footer page-width"><span>WordMatch</span><span>Made for curious minds.</span></footer>
