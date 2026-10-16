@@ -1,8 +1,30 @@
-"""Unit tests for Word Matching Game scoring."""
+"""Unit tests for Word Matching Game logic."""
 
 import unittest
 
-from game import score_answers
+from game import create_round, score_answers
+from questions import WORDS
+
+
+class TestCreateRound(unittest.TestCase):
+    def test_round_contains_requested_number_of_words(self):
+        round_words, definitions = create_round(WORDS, round_size=5)
+
+        self.assertEqual(len(round_words), 5)
+        self.assertEqual(len(definitions), 5)
+
+    def test_round_has_no_duplicate_words(self):
+        round_words, definitions = create_round(WORDS, round_size=10)
+
+        word_ids = [word["id"] for word in round_words]
+        definition_ids = [definition["id"] for definition in definitions]
+        self.assertEqual(len(word_ids), len(set(word_ids)))
+        self.assertEqual(len(definition_ids), len(set(definition_ids)))
+
+    def test_vocabulary_pool_has_unique_ids(self):
+        word_ids = [word["id"] for word in WORDS]
+
+        self.assertEqual(len(word_ids), len(set(word_ids)))
 
 
 class TestScoreAnswers(unittest.TestCase):
