@@ -3,12 +3,20 @@
 import random
 
 
-def create_round(words):
-    """Return words and shuffled definitions for one game round."""
-    round_words = list(words)
+def create_round(words, round_size=None):
+    """Return a random selection of words and shuffled definitions."""
+    available_words = list(words)
+
+    if round_size is not None:
+        available_words = random.sample(
+            available_words,
+            min(round_size, len(available_words)),
+        )
+
+    round_words = list(available_words)
     definitions = [
         {"id": item["id"], "definition": item["definition"]}
-        for item in words
+        for item in round_words
     ]
     random.shuffle(round_words)
     random.shuffle(definitions)
