@@ -1,17 +1,29 @@
 # Word Matching Game
 
-A beginner-friendly vocabulary game built with Python and Flask. Players match words with their definitions, submit their answers, receive a score, and review the correct meanings.
+A beginner-friendly vocabulary game built with Python and Flask. Match words with their definitions, beat the countdown, try different difficulty levels, and learn new words as you play.
 
 ## Features
 
-- Responsive home, game, and results pages.
-- Six vocabulary words in each round.
-- Shuffled words and definitions.
+- A growing pool of 40+ vocabulary words.
+- Randomly selected words in each round.
+- No repeated words between rounds until the vocabulary pool cycle is exhausted.
+- Three difficulty levels: Easy, Normal, and Challenge.
+- Countdown timer that submits the round when time runs out.
+- Shuffled word order and definition order.
 - Server-side answer checking and scoring.
 - Progress counter while choosing answers.
-- Results review and replay.
-- Automated tests for scoring and important website routes.
+- Results review and replay at the same difficulty.
+- Automated tests for scoring, round selection, difficulty settings, and important website routes.
+- Responsive home, game, and results pages.
 - No account or database required.
+
+## Difficulty levels
+
+| Level | Words per round | Time limit |
+|---|---:|---:|
+| Easy | 5 | 60 seconds |
+| Normal | 8 | 75 seconds |
+| Challenge | 10 | 90 seconds |
 
 ## Technology
 
@@ -54,7 +66,7 @@ git clone https://github.com/ugochi74/word-matching.git
 cd word-matching
 ```
 
-If you already have the project, enter its folder and get the latest changes:
+If you already have the project:
 
 ```bash
 cd ~/word-matching
@@ -93,22 +105,21 @@ Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser. Stop the se
 
 ### 5. Run the tests
 
-Open a second terminal, enter the project directory, activate the virtual environment, and run:
-
 ```bash
 python -m unittest discover -s tests -v
 ```
 
 ## How to play
 
-1. Select **Start playing** on the home page.
-2. Choose a definition for each word.
-3. Submit your answers to see your score.
-4. Review the correct meanings and start another round.
+1. Choose Easy, Normal, or Challenge.
+2. Match each word to the correct definition before the timer reaches zero.
+3. Submit early if you're ready, or let the timer submit your current answers.
+4. Review your score and any missed meanings.
+5. Play another round to get a fresh selection of words.
 
 ## Configuration and deployment
 
-The app uses a development secret key by default so it can run locally without extra setup. Before deploying publicly, set a strong `SECRET_KEY` environment variable and configure a production WSGI server. Do not use Flask's development server as the public production server.
+The app uses a development secret key by default so it can run locally. Before deploying publicly, set a strong `SECRET_KEY` environment variable and configure a production WSGI server. Do not use Flask's development server as the public production server.
 
 ## Documentation
 
@@ -117,11 +128,11 @@ The app uses a development secret key by default so it can run locally without e
 
 ## Project status
 
-The first playable web version is implemented. Further work includes verifying the automated tests in a local environment, improving validation and deployment configuration, and publishing the app to a hosting platform.
+The core game and the first round of gameplay improvements are implemented. The expanded test suite should be run locally, and the timer should be manually checked in a browser before deployment.
 
 ## Learning goals
 
-This project provides practice with Python functions, lists and dictionaries, server-side validation, Flask routes and sessions, HTML templates, responsive CSS, JavaScript interactions, automated testing, and Git/GitHub.
+This project provides practice with Python functions, lists and dictionaries, random selection, server-side validation, Flask routes and sessions, HTML templates, responsive CSS, JavaScript interactions, automated testing, and Git/GitHub.
 
 ## License
 
