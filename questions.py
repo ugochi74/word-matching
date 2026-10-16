@@ -10,7 +10,7 @@ WORDS = [
     {"id": "observe", "word": "Observe", "definition": "To watch something carefully."},
     {"id": "confident", "word": "Confident", "definition": "Feeling sure about your abilities."},
     {"id": "discover", "word": "Discover", "definition": "To find or learn something for the first time."},
-    {"id": "ancient", "word": "Ancient", "definition": "Belonging to a very long time ago."},
+    {"id": "vivid", "word": "Vivid", "definition": "Producing clear, strong images or impressions."},
     {"id": "precise", "word": "Precise", "definition": "Exact and accurate."},
     {"id": "scarce", "word": "Scarce", "definition": "Not available in large amounts."},
     {"id": "reluctant", "word": "Reluctant", "definition": "Not willing or eager to do something."},
