@@ -12,6 +12,12 @@ app.config["SECRET_KEY"] = os.environ.get(
     "SECRET_KEY", "local-development-key-change-before-deployment"
 )
 
+DIFFICULTIES = {
+    "easy": {"label": "Easy", "round_size": 5, "seconds": 60},
+    "normal": {"label": "Normal", "round_size": 8, "seconds": 75},
+    "challenge": {"label": "Challenge", "round_size": 10, "seconds": 90},
+}
+
 
 @app.route("/")
 def home():
@@ -28,8 +34,6 @@ def game():
 
         round_words = session.get("round_words", [])
         words_by_id = {word["id"]: word for word in WORDS}
-
-        # Ignore unknown IDs in the session rather than raising a KeyError.
         selected_words = [
             words_by_id[word_id]
             for word_id in round_words
@@ -47,14 +51,41 @@ def game():
         session["results"] = results
         return redirect(url_for("results"))
 
-    round_words, definitions = create_round(WORDS)
-    session["round_words"] = [word["id"] for word in round_words]
+    difficulty_name = request.args.get(
+        "difficulty", session.get("difficulty", "normal")
+    )
+    if difficulty_name not in DIFFICULTIES:
+        difficulty_name = "normal"
+
+    difficulty = DIFFICULTIES[difficulty_name]
+    round_size = difficulty["round_size"]
+    seen_word_ids = set(session.get("seen_word_ids", []))
+    unseen_words = [word for word in WORDS if word["id"] not in seen_word_ids]
+
+    # Start a fresh cycle when there are not enough unseen words for a full round.
+    if len(unseen_words) < round_size:
+        unseen_words = list(WORDS)
+        seen_word_ids = set()
+
+    round_words, definitions = create_round(unseen_words, round_size)
+    current_ids = [word["id"] for word in round_words]
+
+    session["seen_word_ids"] = list(seen_word_ids.union(current_ids))
+    session["round_words"] = current_ids
+    session["difficulty"] = difficulty_name
+    session["round_seconds"] = difficulty["seconds"]
     session["game_active"] = True
     session["game_completed"] = False
     session.pop("results", None)
     session.pop("score", None)
 
-    return render_template("game.html", words=round_words, definitions=definitions)
+    return render_template(
+        "game.html",
+        words=round_words,
+        definitions=definitions,
+        difficulty=difficulty,
+        difficulty_name=difficulty_name,
+    )
 
 
 @app.route("/results")
@@ -68,6 +99,7 @@ def results():
         score=session.get("score", 0),
         total=len(session.get("results", [])),
         results=session.get("results", []),
+        difficulty_name=session.get("difficulty", "normal"),
     )
 
 
