@@ -10,10 +10,12 @@
     <header class="site-header"><a class="brand" href="{{ url_for('home') }}">Word<span>Match</span></a><a class="text-link" href="{{ url_for('home') }}">Home</a></header>
     <main class="results-page page-width">
         <section class="score-card">
-            <p class="eyebrow">ROUND COMPLETE</p><h1>You showed up to learn. <span>That counts.</span></h1>
+            <p class="eyebrow">ROUND COMPLETE · {{ difficulty_name|replace('_', ' ')|upper }}</p>
+            <h1>{% if total and score == total %}Vocabulary superstar! <span>Perfect match.</span>{% elif total and score / total >= 0.7 %}You're finding your flow. <span>Keep it going.</span>{% else %}Every round makes you sharper. <span>Ready for a rematch?</span>{% endif %}</h1>
             <p class="score-number">{{ score }}<span> / {{ total }}</span></p>
-            <p class="score-message">{% if score == total %}Perfect round! You matched every word.{% elif score >= total / 2 %}Good work! Review the answers below and keep growing.{% else %}Every round is practice. Review these meanings and try again.{% endif %}</p>
-            <a class="button button-primary" href="{{ url_for('game') }}">Play another round →</a>
+            <p class="score-message">{% if score == total %}Flawless! You matched every word correctly.{% elif total and score / total >= 0.7 %}Nice work! Review the tricky words and see if you can beat this score.{% else %}No pressure — check the meanings below, then give it another go.{% endif %}</p>
+            <a class="button button-primary" href="{{ url_for('game', difficulty=difficulty_name) }}">Play a fresh round →</a>
+            <p class="quiet-note results-note">Your next round will use different words until you've seen the full set.</p>
         </section>
         <section class="review-section"><p class="eyebrow">ANSWER REVIEW</p><h2>Learn from every match</h2><div class="review-list">
             {% for result in results %}
