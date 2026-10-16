@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Practise vocabulary by matching words with their meanings.">
+    <title>Word Match | Learn as You Play</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="{{ url_for('home') }}">Word<span>Match</span></a>
+        <span class="header-note">A little learning every day</span>
+    </header>
+    <main class="hero page-width">
+        <div class="hero-copy">
+            <p class="eyebrow">LEARN • MATCH • GROW</p>
+            <h1>Words make more sense when you <span>play.</span></h1>
+            <p class="intro">Build your vocabulary one match at a time. Read each word, choose its meaning, and see how many you know.</p>
+            <div class="hero-actions">
+                <a class="button button-primary" href="{{ url_for('game') }}">Start playing <span aria-hidden="true">→</span></a>
+                <span class="quiet-note">Free to play · No account needed</span>
+            </div>
+            <div class="mini-stats">
+                <div><strong>{{ word_count }}</strong><span>words per round</span></div>
+                <div><strong>1</strong><span>goal: learn something</span></div>
+            </div>
+        </div>
+        <section class="preview-card" aria-label="Example word match">
+            <div class="preview-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="preview-label">A QUICK PREVIEW</span></div>
+            <p class="preview-caption">Match the word to its meaning</p>
+            <div class="preview-word">Curious <span>01</span></div>
+            <div class="preview-definition"><span class="definition-icon">A</span><span>Eager to learn or know something.</span><span class="check-mark">✓</span></div>
+            <div class="preview-footer"><span>Small steps add up.</span><span aria-hidden="true">✦</span></div>
+        </section>
+    </main>
+    <section class="how-section page-width">
+        <p class="eyebrow">HOW IT WORKS</p><h2>Three simple steps</h2>
+        <div class="steps-grid">
+            <article class="step-card"><span class="step-number">01</span><h3>Read</h3><p>Take a look at the words in your round.</p></article>
+            <article class="step-card"><span class="step-number">02</span><h3>Match</h3><p>Choose the definition that fits each word.</p></article>
+            <article class="step-card"><span class="step-number">03</span><h3>Learn</h3><p>Submit your answers and check your score.</p></article>
+        </div>
+    </section>
+    <footer class="site-footer page-width"><span>WordMatch</span><span>Made for curious minds.</span></footer>
+</body>
+</html>
