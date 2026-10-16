@@ -1,21 +1,27 @@
 # Word Matching Game
 
-A beginner-friendly vocabulary game built with Python and Flask. Match words with their definitions, beat the countdown, try different difficulty levels, and learn new words as you play.
+A beginner-friendly vocabulary game built with Python and Flask. Match words with their definitions, beat the countdown, build answer streaks, and try to beat your personal best.
 
 ## Features
 
-- A growing pool of 40+ vocabulary words.
-- Randomly selected words in each round.
-- No repeated words between rounds until the vocabulary pool cycle is exhausted.
+- 55 vocabulary words in three themed categories: Everyday English, Science, and Technology.
+- Randomly selected words in each round, without repeats until the selected category's cycle is exhausted.
 - Three difficulty levels: Easy, Normal, and Challenge.
 - Countdown timer that submits the round when time runs out.
 - Shuffled word order and definition order.
 - Server-side answer checking and scoring.
-- Progress counter while choosing answers.
-- Results review and replay at the same difficulty.
-- Automated tests for scoring, round selection, difficulty settings, and important website routes.
+- Consecutive-correct-answer streak tracking.
+- Personal best scores and streak records saved in the current browser using local storage.
+- Results review and replay with the same difficulty and topic.
+- Automated tests for scoring, streaks, round selection, difficulty settings, and important website routes.
 - Responsive home, game, and results pages.
 - No account or database required.
+
+## Categories
+
+- **Everyday English:** useful vocabulary for conversations and everyday life.
+- **Science:** words about nature, space, energy, and living things.
+- **Technology:** words related to computers, the web, and digital tools.
 
 ## Difficulty levels
 
@@ -32,6 +38,7 @@ A beginner-friendly vocabulary game built with Python and Flask. Match words wit
 - HTML and Jinja templates
 - CSS
 - JavaScript
+- Browser local storage
 - Python `unittest`
 
 ## Project structure
@@ -42,7 +49,6 @@ word-matching/
 ├── game.py
 ├── questions.py
 ├── requirements.txt
-├── .gitignore
 ├── templates/
 │   ├── index.html
 │   ├── game.html
@@ -51,7 +57,8 @@ word-matching/
 │   ├── css/
 │   │   └── style.css
 │   └── js/
-│       └── game.js
+│       ├── game.js
+│       └── results.js
 └── tests/
     ├── test_game.py
     └── test_app.py
@@ -111,11 +118,15 @@ python -m unittest discover -s tests -v
 
 ## How to play
 
-1. Choose Easy, Normal, or Challenge.
-2. Match each word to the correct definition before the timer reaches zero.
-3. Submit early if you're ready, or let the timer submit your current answers.
-4. Review your score and any missed meanings.
-5. Play another round to get a fresh selection of words.
+1. Choose a topic and difficulty on the home page.
+2. Match each word to its definition before time runs out.
+3. Watch your consecutive-correct streak as you work through the round.
+4. Review your score, streak, and any missed meanings.
+5. Try to beat your personal best or explore another topic.
+
+## Personal records
+
+Scores and streak records are saved in browser local storage. They are specific to the browser and device you use; they are not shared across devices and may be lost if browser data is cleared.
 
 ## Configuration and deployment
 
@@ -128,11 +139,11 @@ The app uses a development secret key by default so it can run locally. Before d
 
 ## Project status
 
-The core game and the first round of gameplay improvements are implemented. The expanded test suite should be run locally, and the timer should be manually checked in a browser before deployment.
+The game now supports themed vocabulary rounds, three difficulty levels, a countdown timer, streak tracking, and browser-based personal records. Run the automated test suite and manually check the game in a browser before deployment.
 
 ## Learning goals
 
-This project provides practice with Python functions, lists and dictionaries, random selection, server-side validation, Flask routes and sessions, HTML templates, responsive CSS, JavaScript interactions, automated testing, and Git/GitHub.
+This project provides practice with Python functions, lists and dictionaries, random selection, server-side validation, Flask routes and sessions, HTML templates, responsive CSS, JavaScript interactions, browser local storage, automated testing, and Git/GitHub.
 
 ## License
 
