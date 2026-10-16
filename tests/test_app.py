@@ -103,6 +103,22 @@ class TestGameRoutes(unittest.TestCase):
         self.assertEqual(second_response.status_code, 302)
         self.assertTrue(second_response.headers["Location"].endswith("/"))
 
+    def test_category_filter_starts_a_round_from_selected_topic(self):
+        response = self.client.get("/game?category=Technology&difficulty=easy")
+
+        self.assertEqual(response.status_code, 200)
+        with self.client.session_transaction() as game_session:
+            self.assertEqual(game_session["category"], "Technology")
+            self.assertEqual(len(game_session["round_words"]), 5)
+
+        self.assertIn(b"Technology", response.data)
+
+    def test_invalid_category_falls_back_to_everyday_english(self):
+        self.client.get("/game?category=MadeUpTopic")
+
+        with self.client.session_transaction() as game_session:
+            self.assertEqual(game_session["category"], "Everyday English")
+
 
 if __name__ == "__main__":
     unittest.main()
