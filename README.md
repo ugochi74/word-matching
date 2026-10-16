@@ -1,35 +1,64 @@
 # Word Matching Game
 
-A beginner-friendly word matching game built with Python and Flask. Players match words with their correct meanings, earn points for correct answers, and try to complete each round with as few mistakes as possible.
+A beginner-friendly vocabulary game built with Python and Flask. Players match words with their definitions, submit their answers, receive a score, and review the correct meanings.
 
-The goal is to build a small, polished web game while practising Python fundamentals, web development, input validation, testing, and Git/GitHub workflow.
+## Features
 
-## Planned features
+- Responsive home, game, and results pages.
+- Six vocabulary words in each round.
+- Shuffled words and definitions.
+- Server-side answer checking and scoring.
+- Progress counter while choosing answers.
+- Results review and replay.
+- Automated tests for scoring and important website routes.
+- No account or database required.
 
-- Match each word with the correct definition.
-- Choose a difficulty level.
-- Track score, correct answers, and attempts.
-- Start a new round or restart the game.
-- Give clear feedback after each answer.
-- Responsive layout for desktop and mobile.
-- A small question bank that can be expanded over time.
+## Technology
 
-## Planned technology
+- Python 3
+- Flask
+- HTML and Jinja templates
+- CSS
+- JavaScript
+- Python `unittest`
 
-- **Python** for game rules and scoring.
-- **Flask** for the web server and routes.
-- **HTML** for page structure.
-- **CSS** for styling and responsive layout.
-- **JavaScript** for interactive matching controls where useful.
-- **unittest** or **pytest** for testing core game logic.
+## Project structure
 
-## Getting started
+```text
+word-matching/
+├── app.py
+├── game.py
+├── questions.py
+├── requirements.txt
+├── .gitignore
+├── templates/
+│   ├── index.html
+│   ├── game.html
+│   └── results.html
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── game.js
+└── tests/
+    ├── test_game.py
+    └── test_app.py
+```
+
+## Run locally
 
 ### 1. Clone the repository
 
 ```bash
 git clone https://github.com/ugochi74/word-matching.git
 cd word-matching
+```
+
+If you already have the project, enter its folder and get the latest changes:
+
+```bash
+cd ~/word-matching
+git pull origin main
 ```
 
 ### 2. Create and activate a virtual environment
@@ -50,66 +79,49 @@ py -m venv .venv
 
 ### 3. Install dependencies
 
-Once `requirements.txt` has been added:
-
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-The planned web framework is Flask.
+### 4. Start the website
 
-### 4. Run the application
-
-The run command will be added when the Flask application is implemented. The planned entry point is `app.py`.
-
-## Planned project structure
-
-```text
-word-matching/
-├── app.py
-├── game.py
-├── questions.py
-├── requirements.txt
-├── templates/
-│   ├── index.html
-│   └── game.html
-├── static/
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       └── game.js
-├── tests/
-│   ├── test_game.py
-│   └── test_app.py
-├── PRD.md
-├── ROADMAP.md
-└── README.md
+```bash
+python app.py
 ```
 
-This structure is the initial plan and may change as the project develops.
+Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser. Stop the server with `Ctrl+C`.
+
+### 5. Run the tests
+
+Open a second terminal, enter the project directory, activate the virtual environment, and run:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+## How to play
+
+1. Select **Start playing** on the home page.
+2. Choose a definition for each word.
+3. Submit your answers to see your score.
+4. Review the correct meanings and start another round.
+
+## Configuration and deployment
+
+The app uses a development secret key by default so it can run locally without extra setup. Before deploying publicly, set a strong `SECRET_KEY` environment variable and configure a production WSGI server. Do not use Flask's development server as the public production server.
 
 ## Documentation
 
 - [Product Requirements Document](PRD.md)
 - [Implementation Roadmap](ROADMAP.md)
 
-## Current status
+## Project status
 
-**Planning stage.** The product requirements and implementation plan are being documented before the game is built.
+The first playable web version is implemented. Further work includes verifying the automated tests in a local environment, improving validation and deployment configuration, and publishing the app to a hosting platform.
 
 ## Learning goals
 
-By completing this project, you will practise:
-
-- Variables, lists, dictionaries, conditions, loops, and functions.
-- Separating game logic from web routes and page presentation.
-- Validating player choices on the server.
-- Writing tests for correct and incorrect matches.
-- Building a responsive interface and using Git branches and commits.
-
-## Scope and privacy
-
-The first version is a learning project. It will not require accounts, collect personal information, or process payments. Scores can remain temporary for a single game session until persistent storage is intentionally added.
+This project provides practice with Python functions, lists and dictionaries, server-side validation, Flask routes and sessions, HTML templates, responsive CSS, JavaScript interactions, automated testing, and Git/GitHub.
 
 ## License
 
