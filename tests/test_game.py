@@ -35,10 +35,11 @@ class TestScoreAnswers(unittest.TestCase):
         ]
 
     def test_all_correct_answers_get_full_score(self):
-        score, results = score_answers(self.words, {"one": "one", "two": "two"})
+        score, results, best_streak = score_answers(self.words, {"one": "one", "two": "two"})
 
         self.assertEqual(score, 2)
         self.assertTrue(all(result["is_correct"] for result in results))
+        self.assertEqual(best_streak, 2)
 
     def test_incorrect_answer_does_not_get_a_point(self):
         score, results = score_answers(self.words, {"one": "two", "two": "two"})
@@ -46,12 +47,14 @@ class TestScoreAnswers(unittest.TestCase):
         self.assertEqual(score, 1)
         self.assertFalse(results[0]["is_correct"])
         self.assertTrue(results[1]["is_correct"])
+        self.assertEqual(best_streak, 1)
 
     def test_missing_answer_is_incorrect(self):
         score, results = score_answers(self.words, {"one": "one"})
 
         self.assertEqual(score, 1)
         self.assertFalse(results[1]["is_correct"])
+        self.assertEqual(best_streak, 1)
 
     def test_unknown_definition_id_is_incorrect(self):
         score, results = score_answers(
@@ -69,6 +72,24 @@ class TestScoreAnswers(unittest.TestCase):
         self.assertEqual(score, 0)
         self.assertEqual(len(results), len(self.words))
         self.assertTrue(all(not result["is_correct"] for result in results))
+        self.assertEqual(best_streak, 0)
+
+    def test_best_streak_resets_after_an_incorrect_answer(self):
+        words = [
+            {"id": "a", "word": "A", "definition": "First"},
+            {"id": "b", "word": "B", "definition": "Second"},
+            {"id": "c", "word": "C", "definition": "Third"},
+            {"id": "d", "word": "D", "definition": "Fourth"},
+        ]
+        score, results, best_streak = score_answers(
+            words,
+            {"a": "a", "b": "b", "c": "wrong", "d": "d"},
+        )
+
+        self.assertEqual(score, 3)
+        self.assertEqual(best_streak, 2)
+        self.assertEqual(results[2]["streak"], 0)
+        self.assertEqual(results[3]["streak"], 1)
 
 
 if __name__ == "__main__":
