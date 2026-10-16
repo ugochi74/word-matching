@@ -42,7 +42,7 @@ class TestScoreAnswers(unittest.TestCase):
         self.assertEqual(best_streak, 2)
 
     def test_incorrect_answer_does_not_get_a_point(self):
-        score, results = score_answers(self.words, {"one": "two", "two": "two"})
+        score, results, best_streak = score_answers(self.words, {"one": "two", "two": "two"})
 
         self.assertEqual(score, 1)
         self.assertFalse(results[0]["is_correct"])
@@ -50,14 +50,14 @@ class TestScoreAnswers(unittest.TestCase):
         self.assertEqual(best_streak, 1)
 
     def test_missing_answer_is_incorrect(self):
-        score, results = score_answers(self.words, {"one": "one"})
+        score, results, best_streak = score_answers(self.words, {"one": "one"})
 
         self.assertEqual(score, 1)
         self.assertFalse(results[1]["is_correct"])
         self.assertEqual(best_streak, 1)
 
     def test_unknown_definition_id_is_incorrect(self):
-        score, results = score_answers(
+        score, results, best_streak = score_answers(
             self.words,
             {"one": "not-a-real-definition", "two": "two"},
         )
@@ -65,9 +65,10 @@ class TestScoreAnswers(unittest.TestCase):
         self.assertEqual(score, 1)
         self.assertFalse(results[0]["is_correct"])
         self.assertTrue(results[1]["is_correct"])
+        self.assertEqual(best_streak, 1)
 
     def test_empty_answers_get_zero_score(self):
-        score, results = score_answers(self.words, {})
+        score, results, best_streak = score_answers(self.words, {})
 
         self.assertEqual(score, 0)
         self.assertEqual(len(results), len(self.words))
