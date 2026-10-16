@@ -5,21 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Results | WordMatch</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/results.js') }}" defer></script>
 </head>
 <body>
     <header class="site-header"><a class="brand" href="{{ url_for('home') }}">Word<span>Match</span></a><a class="text-link" href="{{ url_for('home') }}">Home</a></header>
     <main class="results-page page-width">
-        <section class="score-card">
+        <section class="score-card" id="score-card"
+            data-score="{{ score }}" data-total="{{ total }}"
+            data-difficulty="{{ difficulty_name }}" data-category="{{ category }}">
             <p class="eyebrow">ROUND COMPLETE · {{ difficulty_name|replace('_', ' ')|upper }}</p>
             <h1>{% if total and score == total %}Vocabulary superstar! <span>Perfect match.</span>{% elif total and score / total >= 0.7 %}You're finding your flow. <span>Keep it going.</span>{% else %}Every round makes you sharper. <span>Ready for a rematch?</span>{% endif %}</h1>
             <p class="score-number">{{ score }}<span> / {{ total }}</span></p>
             <p class="score-message">{% if score == total %}Flawless! You matched every word correctly.{% elif total and score / total >= 0.7 %}Nice work! Review the tricky words and see if you can beat this score.{% else %}No pressure — check the meanings below, then give it another go.{% endif %}</p>
-            <a class="button button-primary" href="{{ url_for('game', difficulty=difficulty_name) }}">Play a fresh round →</a>
-            <p class="quiet-note results-note">Your next round will use different words until you've seen the full set.</p>
+            <div class="result-stats">
+                <div><span class="stat-label">TOPIC</span><strong>{{ category }}</strong></div>
+                <div><span class="stat-label">BEST STREAK THIS ROUND</span><strong>🔥 {{ best_streak }}</strong></div>
+                <div><span class="stat-label">PERSONAL BEST</span><strong id="personal-best">Checking…</strong></div>
+            </div>
+            <p id="new-record" class="record-message" role="status"></p>
+            <a class="button button-primary" href="{{ url_for('game', difficulty=difficulty_name, category=category) }}">Play a fresh round →</a>
+            <p class="quiet-note results-note">Personal bests are saved in this browser on this device.</p>
         </section>
         <section class="review-section"><p class="eyebrow">ANSWER REVIEW</p><h2>Learn from every match</h2><div class="review-list">
             {% for result in results %}
-            <article class="review-item"><span class="review-status {{ 'correct' if result.is_correct else 'incorrect' }}">{{ '✓' if result.is_correct else '↻' }}</span><div><h3>{{ result.word }}</h3><p>{{ result.definition }}</p></div><span class="review-label">{{ 'Correct' if result.is_correct else 'Review' }}</span></article>
+            <article class="review-item"><span class="review-status {{ 'correct' if result.is_correct else 'incorrect' }}">{{ '✓' if result.is_correct else '↻' }}</span><div><h3>{{ result.word }}</h3><p>{{ result.definition }}</p></div><span class="review-label">{{ '🔥 ' ~ result.streak if result.is_correct and result.streak > 1 else ('Correct' if result.is_correct else 'Review') }}</span></article>
             {% endfor %}
         </div></section>
     </main>
