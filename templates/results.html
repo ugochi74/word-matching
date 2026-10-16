@@ -19,8 +19,9 @@
             <p class="score-message">{% if score == total %}Flawless! You matched every word correctly.{% elif total and score / total >= 0.7 %}Nice work! Review the tricky words and see if you can beat this score.{% else %}No pressure — check the meanings below, then give it another go.{% endif %}</p>
             <div class="result-stats">
                 <div><span class="stat-label">TOPIC</span><strong>{{ category }}</strong></div>
-                <div><span class="stat-label">BEST STREAK THIS ROUND</span><strong>🔥 {{ best_streak }}</strong></div>
+                <div><span class="stat-label">BEST STREAK THIS ROUND</span><strong id="current-best-streak" data-streak="{{ best_streak }}">🔥 {{ best_streak }}</strong></div>
                 <div><span class="stat-label">PERSONAL BEST</span><strong id="personal-best">Checking…</strong></div>
+                <div><span class="stat-label">STREAK RECORD</span><strong id="best-streak-record">Checking…</strong></div>
             </div>
             <p id="new-record" class="record-message" role="status"></p>
             <a class="button button-primary" href="{{ url_for('game', difficulty=difficulty_name, category=category) }}">Play a fresh round →</a>
