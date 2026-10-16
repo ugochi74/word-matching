@@ -27,9 +27,18 @@ def game():
             return redirect(url_for("home"))
 
         round_words = session.get("round_words", [])
-        answers = {word_id: request.form.get(word_id, "") for word_id in round_words}
         words_by_id = {word["id"]: word for word in WORDS}
-        selected_words = [words_by_id[word_id] for word_id in round_words]
+
+        # Ignore unknown IDs in the session rather than raising a KeyError.
+        selected_words = [
+            words_by_id[word_id]
+            for word_id in round_words
+            if word_id in words_by_id
+        ]
+        answers = {
+            word["id"]: request.form.get(word["id"], "")
+            for word in selected_words
+        }
         score, results = score_answers(selected_words, answers)
 
         session["game_completed"] = True
@@ -55,10 +64,14 @@ def results():
         return redirect(url_for("home"))
 
     return render_template(
-        "results.html", score=session.get("score", 0),
-        total=len(session.get("results", [])), results=session.get("results", [])
+        "results.html",
+        score=session.get("score", 0),
+        total=len(session.get("results", [])),
+        results=session.get("results", []),
     )
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Enable the debugger only when explicitly requested for local development.
+    debug_mode = os.environ.get("FLASK_DEBUG") == "1"
+    app.run(debug=debug_mode)
