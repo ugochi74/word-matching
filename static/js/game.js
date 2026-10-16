@@ -41,6 +41,7 @@ if (timer && matchingForm) {
 
         if (secondsLeft <= 10) {
             timer.classList.add("timer-warning");
+            timerBar.style.background = "#c96d43";
         }
 
         if (secondsLeft <= 0) {
