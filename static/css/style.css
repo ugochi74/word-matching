@@ -24,3 +24,16 @@
 .difficulty-cta{font-size:.82rem;font-weight:700;color:var(--green)}
 .results-note{margin:18px 0 0;font-size:.78rem}
 @media(max-width:760px){.round-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.round-stat{padding:10px 8px}.round-stat strong{font-size:.82rem}.stat-label{font-size:.55rem}.timer-track{margin-bottom:14px}}
+
+
+/* Topic picker and score/streak records */
+.game-choice-form{display:grid;grid-template-columns:1fr 1fr auto;align-items:end;gap:16px;padding:24px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(31,54,42,.04);margin-bottom:24px}
+.game-choice-form label{display:grid;gap:8px;font-size:.82rem;font-weight:700;color:var(--ink)}
+.game-choice-form select{width:100%;min-width:0;padding:13px;border:1px solid #dce2dc;border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:.88rem}
+.category-grid{margin-top:22px}
+.result-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:26px 0 18px;text-align:left}
+.result-stats>div{display:grid;gap:7px;padding:14px 12px;background:rgba(255,255,255,.65);border:1px solid rgba(39,118,83,.12);border-radius:9px;min-width:0}
+.result-stats .stat-label{font-size:.57rem;line-height:1.4}
+.result-stats strong{font:700 .9rem 'Manrope',sans-serif;overflow-wrap:anywhere}
+.record-message{min-height:1.4em;margin:0 0 16px;color:var(--green);font-size:.9rem;font-weight:700}
+@media(max-width:760px){.game-choice-form{grid-template-columns:1fr;padding:18px}.game-choice-form .button{width:100%}.result-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.result-stats>div{padding:11px 9px}.result-stats strong{font-size:.82rem}}
