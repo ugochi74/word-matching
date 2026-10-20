@@ -37,3 +37,15 @@
 .result-stats strong{font:700 .9rem 'Manrope',sans-serif;overflow-wrap:anywhere}
 .record-message{min-height:1.4em;margin:0 0 16px;color:var(--green);font-size:.9rem;font-weight:700}
 @media(max-width:760px){.game-choice-form{grid-template-columns:1fr;padding:18px}.game-choice-form .button{width:100%}.result-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.result-stats>div{padding:11px 9px}.result-stats strong{font-size:.82rem}}
+
+
+/* Limited hint system */
+.answer-area{display:grid;gap:7px;min-width:0}
+.hint-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hint-button{border:1px solid #c9e0ce;background:var(--mint);color:var(--green-dark);border-radius:7px;padding:6px 10px;font-size:.76rem;font-weight:700;cursor:pointer}
+.hint-button:hover:not(:disabled){background:#dcefe0}
+.hint-button:disabled{opacity:.55;cursor:not-allowed}
+.hint-text{margin:0;color:var(--green-dark);font-size:.8rem;line-height:1.45}
+.form-progress{display:grid;gap:4px}
+.form-progress p{margin:0}
+@media(max-width:760px){.hint-controls{align-items:flex-start;flex-direction:column;gap:5px}}
