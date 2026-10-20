@@ -4,6 +4,11 @@ const matchingForm = document.querySelector("#matching-form");
 const timer = document.querySelector("#timer");
 const timerBar = document.querySelector("#timer-bar");
 const gameMessage = document.querySelector("#game-message");
+const hintButtons = document.querySelectorAll(".hint-button");
+const hintsRemaining = document.querySelector("#hints-remaining");
+
+const HINT_LIMIT = 3;
+let hintsUsed = 0;
 
 function updateAnswerCount() {
     if (!answerCount) {
@@ -22,6 +27,42 @@ function updateAnswerCount() {
         answerCount.textContent += " — all set!";
     }
 }
+
+hintButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        if (hintsUsed >= HINT_LIMIT) {
+            return;
+        }
+
+        const wordId = button.dataset.wordId;
+        const correctOption = document.querySelector(
+            `#${wordId} option[value="${wordId}"]`
+        );
+        const hintText = document.querySelector(`#hint-${wordId}`);
+
+        if (!correctOption || !hintText) {
+            return;
+        }
+
+        const definitionWords = correctOption.textContent.trim().split(/\s+/);
+        const clue = definitionWords.slice(0, Math.min(4, definitionWords.length)).join(" ");
+        hintText.textContent = `Clue: The meaning begins with “${clue}”`;
+        button.disabled = true;
+        button.textContent = "Hint used";
+        hintsUsed += 1;
+
+        const remaining = HINT_LIMIT - hintsUsed;
+        hintsRemaining.textContent = `${remaining} hint${remaining === 1 ? "" : "s"} remaining`;
+
+        if (remaining === 0) {
+            hintButtons.forEach((hintButton) => {
+                if (!hintButton.disabled) {
+                    hintButton.disabled = true;
+                }
+            });
+        }
+    });
+});
 
 answerFields.forEach((field) => {
     field.addEventListener("change", updateAnswerCount);
