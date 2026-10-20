@@ -27,6 +27,29 @@
             <a class="button button-primary" href="{{ url_for('game', difficulty=difficulty_name, category=category) }}">Play a fresh round →</a>
             <p class="quiet-note results-note">Personal bests are saved in this browser on this device.</p>
         </section>
+        <section class="achievements-section" aria-labelledby="achievements-title">
+            <p class="eyebrow">YOUR PROGRESS</p>
+            <h2 id="achievements-title">Achievements and badges</h2>
+            <p class="achievement-intro">Keep playing to unlock all three badges. Your achievements are saved in this browser.</p>
+            <div class="achievements-grid">
+                <article class="achievement-card locked" data-achievement="first-victory">
+                    <span class="achievement-icon" aria-hidden="true">🏆</span>
+                    <div><h3>First Victory</h3><p>Complete your first game.</p></div>
+                    <span class="achievement-status">Locked</span>
+                </article>
+                <article class="achievement-card locked" data-achievement="streak-master">
+                    <span class="achievement-icon" aria-hidden="true">🔥</span>
+                    <div><h3>Streak Master</h3><p>Get 5 correct answers in a row.</p></div>
+                    <span class="achievement-status">Locked</span>
+                </article>
+                <article class="achievement-card locked" data-achievement="perfect-round">
+                    <span class="achievement-icon" aria-hidden="true">💯</span>
+                    <div><h3>Perfect Round</h3><p>Answer every question correctly.</p></div>
+                    <span class="achievement-status">Locked</span>
+                </article>
+            </div>
+            <p id="achievement-message" class="record-message" role="status"></p>
+        </section>
         <section class="review-section"><p class="eyebrow">ANSWER REVIEW</p><h2>Learn from every match</h2><div class="review-list">
             {% for result in results %}
             <article class="review-item"><span class="review-status {{ 'correct' if result.is_correct else 'incorrect' }}">{{ '✓' if result.is_correct else '↻' }}</span><div><h3>{{ result.word }}</h3><p>{{ result.definition }}</p></div><span class="review-label">{{ '🔥 ' ~ result.streak if result.is_correct and result.streak > 1 else ('Correct' if result.is_correct else 'Review') }}</span></article>
