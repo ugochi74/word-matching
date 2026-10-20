@@ -31,14 +31,23 @@
             {% for word in words %}
             <div class="match-row">
                 <label class="word-label" for="{{ word.id }}"><span class="word-index">{{ '%02d' % loop.index }}</span><span>{{ word.word }}</span></label>
-                <select id="{{ word.id }}" name="{{ word.id }}" required>
-                    <option value="">Select a meaning…</option>
-                    {% for definition in definitions %}<option value="{{ definition.id }}">{{ definition.definition }}</option>{% endfor %}
-                </select>
+                <div class="answer-area">
+                    <select id="{{ word.id }}" name="{{ word.id }}" required>
+                        <option value="">Select a meaning…</option>
+                        {% for definition in definitions %}<option value="{{ definition.id }}">{{ definition.definition }}</option>{% endfor %}
+                    </select>
+                    <div class="hint-controls">
+                        <button class="hint-button" type="button" data-word-id="{{ word.id }}">💡 Show hint</button>
+                        <p class="hint-text" id="hint-{{ word.id }}" role="status" aria-live="polite"></p>
+                    </div>
+                </div>
             </div>
             {% endfor %}
             <div class="form-bottom">
-                <p id="answer-count" class="quiet-note">0 of {{ words|length }} answered</p>
+                <div class="form-progress">
+                    <p id="answer-count" class="quiet-note">0 of {{ words|length }} answered</p>
+                    <p id="hints-remaining" class="quiet-note">3 hints remaining</p>
+                </div>
                 <button class="button button-primary" type="submit">Lock in answers →</button>
             </div>
         </form>
