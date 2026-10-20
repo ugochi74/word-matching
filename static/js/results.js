@@ -33,6 +33,63 @@ if (scoreCard && personalBest) {
         if (isNewRecord && newRecord) {
             newRecord.textContent = "🏆 New personal best! You beat your previous score.";
         }
+
+        // Work out which achievements this round has earned.
+        const total = Number(scoreCard.dataset.total);
+        const achievementKey = "wordmatch-achievements";
+        let savedAchievements = {};
+
+        try {
+            const saved = JSON.parse(window.localStorage.getItem(achievementKey) || "{}");
+            if (saved && typeof saved === "object" && !Array.isArray(saved)) {
+                savedAchievements = saved;
+            }
+        } catch (error) {
+            savedAchievements = {};
+        }
+
+        const earnedAchievements = {
+            "first-victory": true,
+            "streak-master": currentStreak >= 5,
+            "perfect-round": total > 0 && score === total,
+        };
+        const achievementNames = {
+            "first-victory": "First Victory",
+            "streak-master": "Streak Master",
+            "perfect-round": "Perfect Round",
+        };
+        const newlyUnlocked = [];
+
+        for (const achievementId in earnedAchievements) {
+            if (earnedAchievements[achievementId] && !savedAchievements[achievementId]) {
+                newlyUnlocked.push(achievementNames[achievementId]);
+            }
+        }
+
+        const updatedAchievements = { ...savedAchievements };
+        for (const achievementId in earnedAchievements) {
+            if (earnedAchievements[achievementId]) {
+                updatedAchievements[achievementId] = true;
+            }
+        }
+        window.localStorage.setItem(achievementKey, JSON.stringify(updatedAchievements));
+
+        document.querySelectorAll("[data-achievement]").forEach((card) => {
+            const achievementId = card.dataset.achievement;
+            const isUnlocked = Boolean(updatedAchievements[achievementId]);
+            card.classList.toggle("unlocked", isUnlocked);
+            card.classList.toggle("locked", !isUnlocked);
+
+            const status = card.querySelector(".achievement-status");
+            if (status) {
+                status.textContent = isUnlocked ? "Unlocked ✓" : "Locked";
+            }
+        });
+
+        const achievementMessage = document.querySelector("#achievement-message");
+        if (achievementMessage && newlyUnlocked.length > 0) {
+            achievementMessage.textContent = `🎉 New badge unlocked: ${newlyUnlocked.join(", ")}!`;
+        }
     } catch (error) {
         personalBest.textContent = "Unavailable";
         if (bestStreakRecord) {
