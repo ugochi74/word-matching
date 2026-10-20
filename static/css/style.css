@@ -49,3 +49,19 @@
 .form-progress{display:grid;gap:4px}
 .form-progress p{margin:0}
 @media(max-width:760px){.hint-controls{align-items:flex-start;flex-direction:column;gap:5px}}
+
+
+/* Achievements and badges */
+.achievements-section{max-width:850px;margin:0 auto 70px}
+.achievements-section h2{font-size:2rem;margin-bottom:10px}
+.achievement-intro{color:var(--muted);font-size:.92rem;margin:0 0 22px}
+.achievements-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.achievement-card{display:grid;grid-template-columns:auto 1fr;align-items:start;gap:12px;padding:18px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;min-width:0}
+.achievement-card.locked{opacity:.68;background:#f5f5f0}
+.achievement-card.unlocked{border-color:#b8d8c0;background:var(--mint)}
+.achievement-icon{font-size:1.8rem;line-height:1.3}
+.achievement-card h3{font-size:1rem;margin:0 0 5px}
+.achievement-card p{font-size:.8rem;line-height:1.5;color:var(--muted);margin:0}
+.achievement-status{grid-column:2;color:var(--muted);font-size:.72rem;font-weight:700}
+.achievement-card.unlocked .achievement-status{color:var(--green-dark)}
+@media(max-width:760px){.achievements-section h2{font-size:1.65rem}.achievements-grid{grid-template-columns:1fr}.achievement-card{grid-template-columns:auto 1fr;align-items:center}.achievement-status{grid-column:2}}
