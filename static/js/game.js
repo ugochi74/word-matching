@@ -6,6 +6,60 @@ const timerBar = document.querySelector("#timer-bar");
 const gameMessage = document.querySelector("#game-message");
 const hintButtons = document.querySelectorAll(".hint-button");
 const hintsRemaining = document.querySelector("#hints-remaining");
+const soundToggle = document.querySelector("#sound-toggle");
+
+let soundEnabled = true;
+try {
+    soundEnabled = window.localStorage.getItem("wordmatch-sound") !== "off";
+} catch (error) {
+    soundEnabled = true;
+}
+
+function playTone(frequency = 660, duration = 0.08) {
+    if (!soundEnabled) {
+        return;
+    }
+
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const volume = audioContext.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = frequency;
+        volume.gain.setValueAtTime(0.08, audioContext.currentTime);
+        volume.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+        oscillator.connect(volume);
+        volume.connect(audioContext.destination);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + duration);
+        oscillator.addEventListener("ended", () => audioContext.close());
+    } catch (error) {
+        // The game still works if the browser does not support audio.
+    }
+}
+
+function updateSoundButton() {
+    if (soundToggle) {
+        soundToggle.textContent = soundEnabled ? "🔊 Sound on" : "🔇 Sound off";
+        soundToggle.setAttribute("aria-pressed", String(soundEnabled));
+    }
+}
+
+if (soundToggle) {
+    updateSoundButton();
+    soundToggle.addEventListener("click", () => {
+        soundEnabled = !soundEnabled;
+        try {
+            window.localStorage.setItem("wordmatch-sound", soundEnabled ? "on" : "off");
+        } catch (error) {
+            // Sound can still be changed for this page if storage is unavailable.
+        }
+        updateSoundButton();
+        if (soundEnabled) {
+            playTone(740, 0.1);
+        }
+    });
+}
 
 const HINT_LIMIT = 3;
 let hintsUsed = 0;
@@ -65,7 +119,16 @@ hintButtons.forEach((button) => {
 });
 
 answerFields.forEach((field) => {
-    field.addEventListener("change", updateAnswerCount);
+    field.addEventListener("change", () => {
+        updateAnswerCount();
+        const row = field.closest(".match-row");
+        if (row) {
+            row.classList.toggle("has-answer", field.value !== "");
+        }
+        if (field.value !== "") {
+            playTone(620, 0.06);
+        }
+    });
 });
 
 updateAnswerCount();
