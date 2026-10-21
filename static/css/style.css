@@ -65,3 +65,29 @@
 .achievement-status{grid-column:2;color:var(--muted);font-size:.72rem;font-weight:700}
 .achievement-card.unlocked .achievement-status{color:var(--green-dark)}
 @media(max-width:760px){.achievements-section h2{font-size:1.65rem}.achievements-grid{grid-template-columns:1fr}.achievement-card{grid-template-columns:auto 1fr;align-items:center}.achievement-status{grid-column:2}}
+
+ 
+/* Sound controls and answer feedback */
+.header-actions{display:flex;align-items:center;gap:18px}
+.sound-toggle{border:1px solid #c9e0ce;background:#fff;color:var(--green-dark);border-radius:8px;padding:8px 11px;font-size:.78rem;font-weight:700;cursor:pointer}
+.sound-toggle:hover{background:var(--mint)}
+.match-row{transition:background .2s ease,border-color .2s ease}
+.match-row.has-answer{background:#f1f8f2}
+.match-row.has-answer select{border-color:#9bc9a6;box-shadow:0 0 0 2px rgba(38,118,83,.08)}
+.review-item{animation:review-arrive .35s ease both}
+.review-item:nth-child(2){animation-delay:.04s}
+.review-item:nth-child(3){animation-delay:.08s}
+.review-item:nth-child(4){animation-delay:.12s}
+.review-item:nth-child(5){animation-delay:.16s}
+.review-item:nth-child(6){animation-delay:.20s}
+.review-item:nth-child(7){animation-delay:.24s}
+.review-item:nth-child(8){animation-delay:.28s}
+.review-item:nth-child(9){animation-delay:.32s}
+.review-item:nth-child(10){animation-delay:.36s}
+.score-number{animation:score-pop .55s ease both}
+.achievement-card.unlocked .achievement-icon{display:inline-block;animation:badge-pop .45s ease both}
+@keyframes review-arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes score-pop{from{opacity:.4;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes badge-pop{0%{transform:scale(.7)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+@media(max-width:760px){.header-actions{gap:10px}.sound-toggle{padding:7px 8px;font-size:.72rem}}
+@media(prefers-reduced-motion:reduce){.review-item,.score-number,.achievement-card.unlocked .achievement-icon{animation:none}}
