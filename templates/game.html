@@ -10,7 +10,7 @@
 <body>
     <header class="site-header">
         <a class="brand" href="{{ url_for('home') }}">Word<span>Match</span></a>
-        <a class="text-link" href="{{ url_for('home') }}">← Home</a>
+        <div class="header-actions"><button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true">🔊 Sound on</button><a class="text-link" href="{{ url_for('home') }}">← Home</a></div>
     </header>
     <main class="game-page page-width">
         <div class="game-heading">
