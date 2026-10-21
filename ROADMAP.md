@@ -21,7 +21,8 @@
 - [ ] Run the expanded automated test suite locally and fix any failures.
 - [ ] Test the countdown and automatic submission on desktop and mobile browsers.
 - [ ] Add more words to each category over time.
-- [ ] Consider optional sound effects and a daily challenge.
+- [x] Add optional sound effects, a sound toggle, answer-selection feedback, and result animations.
+- [ ] Add a daily challenge.
 - [ ] Configure production secret key and deploy the app.
 
 ## Difficulty settings
