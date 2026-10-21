@@ -100,3 +100,63 @@ if (scoreCard && personalBest) {
         }
     }
 }
+
+
+// Optional result sounds. Click the sound button to hear feedback for this round.
+const resultSoundToggle = document.querySelector("#sound-toggle");
+let resultSoundEnabled = true;
+
+try {
+    resultSoundEnabled = window.localStorage.getItem("wordmatch-sound") !== "off";
+} catch (error) {
+    resultSoundEnabled = true;
+}
+
+function playResultTone(frequency, delay) {
+    window.setTimeout(() => {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const volume = audioContext.createGain();
+            oscillator.type = "sine";
+            oscillator.frequency.value = frequency;
+            volume.gain.setValueAtTime(0.08, audioContext.currentTime);
+            volume.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.12);
+            oscillator.connect(volume);
+            volume.connect(audioContext.destination);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.12);
+            oscillator.addEventListener("ended", () => audioContext.close());
+        } catch (error) {
+            // Visual results remain available if audio is unsupported.
+        }
+    }, delay);
+}
+
+function updateResultSoundButton() {
+    if (resultSoundToggle) {
+        resultSoundToggle.textContent = resultSoundEnabled ? "🔊 Play result sounds" : "🔇 Sound off";
+        resultSoundToggle.setAttribute("aria-pressed", String(resultSoundEnabled));
+    }
+}
+
+if (resultSoundToggle) {
+    updateResultSoundButton();
+    resultSoundToggle.addEventListener("click", () => {
+        resultSoundEnabled = !resultSoundEnabled;
+        try {
+            window.localStorage.setItem("wordmatch-sound", resultSoundEnabled ? "on" : "off");
+        } catch (error) {
+            // Sound can still be toggled for this page.
+        }
+        updateResultSoundButton();
+
+        if (resultSoundEnabled) {
+            const reviewStatuses = document.querySelectorAll(".review-status");
+            reviewStatuses.forEach((status, index) => {
+                const isCorrect = status.classList.contains("correct");
+                playResultTone(isCorrect ? 740 : 260, index * 180);
+            });
+        }
+    });
+}
