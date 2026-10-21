@@ -8,7 +8,7 @@
     <script src="{{ url_for('static', filename='js/results.js') }}" defer></script>
 </head>
 <body>
-    <header class="site-header"><a class="brand" href="{{ url_for('home') }}">Word<span>Match</span></a><a class="text-link" href="{{ url_for('home') }}">Home</a></header>
+    <header class="site-header"><a class="brand" href="{{ url_for('home') }}">Word<span>Match</span></a><div class="header-actions"><button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true">🔊 Sound on</button><a class="text-link" href="{{ url_for('home') }}">Home</a></div></header>
     <main class="results-page page-width">
         <section class="score-card" id="score-card"
             data-score="{{ score }}" data-total="{{ total }}"
