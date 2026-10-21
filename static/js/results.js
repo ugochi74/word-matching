@@ -102,15 +102,8 @@ if (scoreCard && personalBest) {
 }
 
 
-// Optional result sounds. Click the sound button to hear feedback for this round.
-const resultSoundToggle = document.querySelector("#sound-toggle");
-let resultSoundEnabled = true;
-
-try {
-    resultSoundEnabled = window.localStorage.getItem("wordmatch-sound") !== "off";
-} catch (error) {
-    resultSoundEnabled = true;
-}
+// Click to hear a short sound for each correct or incorrect answer.
+const resultSoundButton = document.querySelector("#sound-toggle");
 
 function playResultTone(frequency, delay) {
     window.setTimeout(() => {
@@ -133,30 +126,19 @@ function playResultTone(frequency, delay) {
     }, delay);
 }
 
-function updateResultSoundButton() {
-    if (resultSoundToggle) {
-        resultSoundToggle.textContent = resultSoundEnabled ? "🔊 Play result sounds" : "🔇 Sound off";
-        resultSoundToggle.setAttribute("aria-pressed", String(resultSoundEnabled));
-    }
-}
-
-if (resultSoundToggle) {
-    updateResultSoundButton();
-    resultSoundToggle.addEventListener("click", () => {
-        resultSoundEnabled = !resultSoundEnabled;
+if (resultSoundButton) {
+    resultSoundButton.textContent = "🔊 Hear result sounds";
+    resultSoundButton.addEventListener("click", () => {
         try {
-            window.localStorage.setItem("wordmatch-sound", resultSoundEnabled ? "on" : "off");
+            window.localStorage.setItem("wordmatch-sound", "on");
         } catch (error) {
-            // Sound can still be toggled for this page.
+            // The sound button still works if storage is unavailable.
         }
-        updateResultSoundButton();
 
-        if (resultSoundEnabled) {
-            const reviewStatuses = document.querySelectorAll(".review-status");
-            reviewStatuses.forEach((status, index) => {
-                const isCorrect = status.classList.contains("correct");
-                playResultTone(isCorrect ? 740 : 260, index * 180);
-            });
-        }
+        resultSoundButton.textContent = "🎵 Playing result sounds…";
+        document.querySelectorAll(".review-status").forEach((status, index) => {
+            const isCorrect = status.classList.contains("correct");
+            playResultTone(isCorrect ? 740 : 260, index * 180);
+        });
     });
 }
