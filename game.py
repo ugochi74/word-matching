@@ -23,6 +23,20 @@ def create_round(words, round_size=None):
     return round_words, definitions
 
 
+def create_daily_round(words, round_size, date_key):
+    """Create the same shuffled challenge for everyone on the same date."""
+    daily_random = random.Random(date_key)
+    selected_words = daily_random.sample(words, min(round_size, len(words)))
+    round_words = list(selected_words)
+    definitions = [
+        {"id": item["id"], "definition": item["definition"]}
+        for item in round_words
+    ]
+    daily_random.shuffle(round_words)
+    daily_random.shuffle(definitions)
+    return round_words, definitions
+
+
 def score_answers(words, answers):
     """Score answers and track the longest streak of correct matches."""
     correct_answers = {item["id"]: item["id"] for item in words}
