@@ -2,7 +2,7 @@
 
 import unittest
 
-from game import create_round, score_answers
+from game import create_daily_round, create_round, score_answers
 from questions import WORDS
 
 
@@ -20,6 +20,16 @@ class TestCreateRound(unittest.TestCase):
         definition_ids = [definition["id"] for definition in definitions]
         self.assertEqual(len(word_ids), len(set(word_ids)))
         self.assertEqual(len(definition_ids), len(set(definition_ids)))
+
+    def test_daily_round_is_repeatable_for_the_same_date(self):
+        first_words, first_definitions = create_daily_round(WORDS, 8, "2026-10-22")
+        second_words, second_definitions = create_daily_round(WORDS, 8, "2026-10-22")
+
+        self.assertEqual(
+            [word["id"] for word in first_words],
+            [word["id"] for word in second_words],
+        )
+        self.assertEqual(first_definitions, second_definitions)
 
     def test_vocabulary_pool_has_unique_ids(self):
         word_ids = [word["id"] for word in WORDS]
