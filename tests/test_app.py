@@ -51,7 +51,7 @@ class TestGameRoutes(unittest.TestCase):
         self.assertEqual(first_round, second_round)
 
     def test_daily_challenge_results_keep_daily_challenge_label(self):
-        self.client.get("/daily-challenge")
+        self.client.get("/daily-challenge", follow_redirects=True)
         with self.client.session_transaction() as game_session:
             round_words = list(game_session["round_words"])
 
