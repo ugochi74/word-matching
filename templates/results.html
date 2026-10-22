@@ -13,7 +13,7 @@
         <section class="score-card" id="score-card"
             data-score="{{ score }}" data-total="{{ total }}"
             data-difficulty="{{ difficulty_name }}" data-category="{{ category }}">
-            <p class="eyebrow">ROUND COMPLETE · {{ difficulty_name|replace('_', ' ')|upper }}</p>
+            <p class="eyebrow">{% if is_daily_challenge %}🌟 DAILY CHALLENGE COMPLETE · {{ daily_date }}{% else %}ROUND COMPLETE · {{ difficulty_name|replace('_', ' ')|upper }}{% endif %}</p>
             <h1>{% if total and score == total %}Vocabulary superstar! <span>Perfect match.</span>{% elif total and score / total >= 0.7 %}You're finding your flow. <span>Keep it going.</span>{% else %}Every round makes you sharper. <span>Ready for a rematch?</span>{% endif %}</h1>
             <p class="score-number">{{ score }}<span> / {{ total }}</span></p>
             <p class="score-message">{% if score == total %}Flawless! You matched every word correctly.{% elif total and score / total >= 0.7 %}Nice work! Review the tricky words and see if you can beat this score.{% else %}No pressure — check the meanings below, then give it another go.{% endif %}</p>
@@ -24,7 +24,11 @@
                 <div><span class="stat-label">STREAK RECORD</span><strong id="best-streak-record">Checking…</strong></div>
             </div>
             <p id="new-record" class="record-message" role="status"></p>
+            {% if is_daily_challenge %}
+            <a class="button button-primary" href="{{ url_for('daily_challenge') }}">Try today's challenge again →</a>
+            {% else %}
             <a class="button button-primary" href="{{ url_for('game', difficulty=difficulty_name, category=category) }}">Play a fresh round →</a>
+            {% endif %}
             <p class="quiet-note results-note">Personal bests are saved in this browser on this device.</p>
         </section>
         <section class="achievements-section" aria-labelledby="achievements-title">
