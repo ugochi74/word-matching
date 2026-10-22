@@ -31,6 +31,37 @@ class TestGameRoutes(unittest.TestCase):
             self.assertEqual(len(game_session["round_words"]), 8)
             self.assertEqual(game_session["difficulty"], "normal")
 
+    def test_daily_challenge_uses_eight_words_and_same_words_for_the_day(self):
+        first_response = self.client.get("/daily-challenge", follow_redirects=True)
+
+        self.assertEqual(first_response.status_code, 200)
+        self.assertIn(b"DAILY CHALLENGE", first_response.data)
+        with self.client.session_transaction() as game_session:
+            first_round = list(game_session["round_words"])
+            self.assertEqual(game_session["category"], "Daily Challenge")
+            self.assertTrue(game_session["is_daily_challenge"])
+            self.assertEqual(len(first_round), 8)
+
+        second_response = self.client.get("/daily-challenge", follow_redirects=True)
+
+        self.assertEqual(second_response.status_code, 200)
+        with self.client.session_transaction() as game_session:
+            second_round = list(game_session["round_words"])
+
+        self.assertEqual(first_round, second_round)
+
+    def test_daily_challenge_results_keep_daily_challenge_label(self):
+        self.client.get("/daily-challenge")
+        with self.client.session_transaction() as game_session:
+            round_words = list(game_session["round_words"])
+
+        answers = {word_id: word_id for word_id in round_words}
+        response = self.client.post("/game", data=answers, follow_redirects=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"DAILY CHALLENGE COMPLETE", response.data)
+        self.assertIn(b"Try today's challenge again", response.data)
+
     def test_easy_difficulty_starts_five_word_round(self):
         response = self.client.get("/game?difficulty=easy")
 
