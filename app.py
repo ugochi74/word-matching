@@ -1,10 +1,11 @@
 """Flask web application for the Word Matching Game."""
 
 import os
+from datetime import date
 
 from flask import Flask, redirect, render_template, request, session, url_for
 
-from game import create_round, score_answers
+from game import create_daily_round, create_round, score_answers
 from questions import WORDS
 
 app = Flask(__name__)
@@ -28,6 +29,12 @@ def home():
         word_count=len(WORDS),
         categories=CATEGORIES,
     )
+
+
+@app.route("/daily-challenge")
+def daily_challenge():
+    """Open today's shared daily challenge."""
+    return redirect(url_for("game", daily="1"))
 
 
 @app.route("/game", methods=["GET", "POST"])
@@ -57,36 +64,57 @@ def game():
         session["best_streak"] = best_streak
         return redirect(url_for("results"))
 
-    difficulty_name = request.args.get(
-        "difficulty", session.get("difficulty", "normal")
-    )
-    if difficulty_name not in DIFFICULTIES:
+    is_daily_challenge = request.args.get("daily") == "1"
+    daily_date = date.today().isoformat()
+
+    if is_daily_challenge:
         difficulty_name = "normal"
-
-    category = request.args.get("category", session.get("category", "Everyday English"))
-    if category not in CATEGORIES:
-        category = "Everyday English"
-
-    difficulty = DIFFICULTIES[difficulty_name]
-    round_size = difficulty["round_size"]
-    category_words = [word for word in WORDS if word.get("category") == category]
-    seen_by_category = session.get("seen_words_by_category", {})
-    seen_word_ids = set(seen_by_category.get(category, []))
-    unseen_words = [word for word in category_words if word["id"] not in seen_word_ids]
-
-    # Start a new cycle for this category when too few unseen words remain.
-    if len(unseen_words) < round_size:
-        unseen_words = list(category_words)
+        category = "Daily Challenge"
+        difficulty = DIFFICULTIES[difficulty_name]
+        round_words, definitions = create_daily_round(WORDS, 8, daily_date)
+        seen_by_category = session.get("seen_words_by_category", {})
         seen_word_ids = set()
+    else:
+        difficulty_name = request.args.get(
+            "difficulty", session.get("difficulty", "normal")
+        )
+        if difficulty_name not in DIFFICULTIES:
+            difficulty_name = "normal"
 
-    round_words, definitions = create_round(unseen_words, round_size)
+        category = request.args.get(
+            "category", session.get("category", "Everyday English")
+        )
+        if category not in CATEGORIES:
+            category = "Everyday English"
+
+        difficulty = DIFFICULTIES[difficulty_name]
+        round_size = difficulty["round_size"]
+        category_words = [
+            word for word in WORDS if word.get("category") == category
+        ]
+        seen_by_category = session.get("seen_words_by_category", {})
+        seen_word_ids = set(seen_by_category.get(category, []))
+        unseen_words = [
+            word for word in category_words if word["id"] not in seen_word_ids
+        ]
+
+        # Start a new cycle for this category when too few unseen words remain.
+        if len(unseen_words) < round_size:
+            unseen_words = list(category_words)
+            seen_word_ids = set()
+
+        round_words, definitions = create_round(unseen_words, round_size)
+
     current_ids = [word["id"] for word in round_words]
-    seen_by_category[category] = list(seen_word_ids.union(current_ids))
+    if not is_daily_challenge:
+        seen_by_category[category] = list(seen_word_ids.union(current_ids))
 
     session["seen_words_by_category"] = seen_by_category
     session["round_words"] = current_ids
     session["difficulty"] = difficulty_name
     session["category"] = category
+    session["is_daily_challenge"] = is_daily_challenge
+    session["daily_date"] = daily_date if is_daily_challenge else None
     session["round_seconds"] = difficulty["seconds"]
     session["game_active"] = True
     session["game_completed"] = False
@@ -101,6 +129,8 @@ def game():
         difficulty=difficulty,
         difficulty_name=difficulty_name,
         category=category,
+        is_daily_challenge=is_daily_challenge,
+        daily_date=daily_date,
     )
 
 
@@ -118,6 +148,8 @@ def results():
         difficulty_name=session.get("difficulty", "normal"),
         category=session.get("category", "Everyday English"),
         best_streak=session.get("best_streak", 0),
+        is_daily_challenge=session.get("is_daily_challenge", False),
+        daily_date=session.get("daily_date"),
     )
 
 
