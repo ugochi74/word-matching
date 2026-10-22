@@ -14,9 +14,15 @@
     </header>
     <main class="game-page page-width">
         <div class="game-heading">
+            {% if is_daily_challenge %}
+            <p class="eyebrow">🌟 DAILY CHALLENGE · {{ daily_date }}</p>
+            <h1>Today's word challenge.</h1>
+            <p class="intro">Eight words selected for today's shared challenge. Everyone gets the same set — how many can you match before the clock runs out?</p>
+            {% else %}
             <p class="eyebrow">YOUR ROUND · {{ difficulty.label|upper }}</p>
             <h1>Find the right meaning.</h1>
             <p class="intro">Topic: <strong>{{ category }}</strong>. New words every round — match them before the clock runs out!</p>
+            {% endif %}
         </div>
 
         <div class="round-stats">
