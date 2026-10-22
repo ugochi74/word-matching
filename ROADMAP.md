@@ -22,7 +22,7 @@
 - [ ] Test the countdown and automatic submission on desktop and mobile browsers.
 - [ ] Add more words to each category over time.
 - [x] Add optional sound effects, a sound toggle, answer-selection feedback, and result animations.
-- [ ] Add a daily challenge.
+- [x] Add a daily challenge with the same eight words for everyone each calendar day.
 - [ ] Configure production secret key and deploy the app.
 
 ## Difficulty settings
