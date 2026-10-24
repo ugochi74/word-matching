@@ -20,7 +20,7 @@
 
 - [ ] Run the expanded automated test suite locally and fix any failures.
 - [ ] Test the countdown and automatic submission on desktop and mobile browsers.
-- [ ] Add more words to each category over time.
+- [x] Expand the vocabulary with additional words across all three categories; continue adding more over time.
 - [x] Add optional sound effects, a sound toggle, answer-selection feedback, and result animations.
 - [x] Add a daily challenge with the same eight words for everyone each calendar day.
 - [ ] Configure production secret key and deploy the app.
