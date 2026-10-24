@@ -6,6 +6,7 @@
     <meta name="description" content="Practise vocabulary with fresh words, difficulty levels, streaks, and themed rounds.">
     <title>Word Match | Learn as You Play</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/progress.js') }}" defer></script>
 </head>
 <body>
     <header class="site-header">
@@ -35,6 +36,21 @@
             <div class="preview-footer"><span>Build your streak. Beat your best.</span><span aria-hidden="true">✦</span></div>
         </section>
     </main>
+    <section class="progress-section page-width" id="player-progress" aria-labelledby="progress-title">
+        <p class="eyebrow">YOUR JOURNEY</p>
+        <h2 id="progress-title">Your learning progress</h2>
+        <p class="progress-intro">Your results stay in this browser, so you can track how your vocabulary improves.</p>
+        <div class="progress-stats">
+            <article class="progress-stat"><span class="stat-label">GAMES PLAYED</span><strong id="progress-games-played">0</strong></article>
+            <article class="progress-stat"><span class="stat-label">AVERAGE SCORE</span><strong id="progress-average-score">0%</strong></article>
+            <article class="progress-stat"><span class="stat-label">BEST SCORE</span><strong id="progress-best-score">—</strong></article>
+        </div>
+        <div class="recent-progress">
+            <h3>Recent games</h3>
+            <p id="progress-empty" hidden>No games recorded yet. Play a round to start tracking your progress.</p>
+            <ul id="progress-recent-games"></ul>
+        </div>
+    </section>
     <section class="how-section page-width" id="choose-game">
         <p class="eyebrow">MAKE IT YOURS</p>
         <h2>Choose your next round</h2>
