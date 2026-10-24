@@ -1,6 +1,7 @@
 """Flask web application for the Word Matching Game."""
 
 import os
+import secrets
 from datetime import date
 
 from flask import Flask, redirect, render_template, request, session, url_for
@@ -116,6 +117,7 @@ def game():
     session["is_daily_challenge"] = is_daily_challenge
     session["daily_date"] = daily_date if is_daily_challenge else None
     session["round_seconds"] = difficulty["seconds"]
+    session["round_id"] = secrets.token_hex(8)
     session["game_active"] = True
     session["game_completed"] = False
     session.pop("results", None)
@@ -150,6 +152,7 @@ def results():
         best_streak=session.get("best_streak", 0),
         is_daily_challenge=session.get("is_daily_challenge", False),
         daily_date=session.get("daily_date"),
+        round_id=session.get("round_id", ""),
     )
 
 
