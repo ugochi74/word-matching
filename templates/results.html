@@ -12,7 +12,7 @@
     <main class="results-page page-width">
         <section class="score-card" id="score-card"
             data-score="{{ score }}" data-total="{{ total }}"
-            data-difficulty="{{ difficulty_name }}" data-category="{{ category }}">
+            data-difficulty="{{ difficulty_name }}" data-category="{{ category }}" data-round-id="{{ round_id }}">
             <p class="eyebrow">{% if is_daily_challenge %}🌟 DAILY CHALLENGE COMPLETE · {{ daily_date }}{% else %}ROUND COMPLETE · {{ difficulty_name|replace('_', ' ')|upper }}{% endif %}</p>
             <h1>{% if total and score == total %}Vocabulary superstar! <span>Perfect match.</span>{% elif total and score / total >= 0.7 %}You're finding your flow. <span>Keep it going.</span>{% else %}Every round makes you sharper. <span>Ready for a rematch?</span>{% endif %}</h1>
             <p class="score-number">{{ score }}<span> / {{ total }}</span></p>
