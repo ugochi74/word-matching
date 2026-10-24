@@ -58,7 +58,7 @@ WORDS = [
     {"id": "species", "word": "Species", "definition": "A group of living things of the same kind.", "category": "Science"}
     {"id": "patiently", "word": "Patiently", "definition": "In a calm way while waiting for something.", "category": "Everyday English"},
     {"id": "resourceful", "word": "Resourceful", "definition": "Good at finding ways to solve problems.", "category": "Everyday English"},
-    {"id": "generousity", "word": "Kindness", "definition": "The quality of being friendly and helpful.", "category": "Everyday English"},
+    {"id": "kindness", "word": "Kindness", "definition": "The quality of being friendly and helpful.", "category": "Everyday English"},
     {"id": "hesitate", "word": "Hesitate", "definition": "To pause before doing or saying something.", "category": "Everyday English"},
     {"id": "reliable", "word": "Reliable", "definition": "Able to be trusted or depended on.", "category": "Everyday English"},
     {"id": "photosynthesis", "word": "Photosynthesis", "definition": "The process plants use to make food from sunlight.", "category": "Science"},
