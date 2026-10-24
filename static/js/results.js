@@ -34,6 +34,79 @@ if (scoreCard && personalBest) {
             newRecord.textContent = "🏆 New personal best! You beat your previous score.";
         }
 
+
+        // Save overall progress once per completed round, even if results are refreshed.
+        const roundId = scoreCard.dataset.roundId;
+        const progressKey = "wordmatch-progress";
+        const processedKey = "wordmatch-processed-rounds";
+        let progress = {
+            gamesPlayed: 0,
+            totalCorrect: 0,
+            totalQuestions: 0,
+            bestScore: null,
+            history: [],
+        };
+        let processedRounds = [];
+
+        try {
+            const savedProgress = JSON.parse(window.localStorage.getItem(progressKey) || "null");
+            if (savedProgress && typeof savedProgress === "object") {
+                progress = { ...progress, ...savedProgress };
+            }
+            const savedProcessed = JSON.parse(window.localStorage.getItem(processedKey) || "[]");
+            if (Array.isArray(savedProcessed)) {
+                processedRounds = savedProcessed;
+            }
+        } catch (error) {
+            progress = {
+                gamesPlayed: 0,
+                totalCorrect: 0,
+                totalQuestions: 0,
+                bestScore: null,
+                history: [],
+            };
+            processedRounds = [];
+        }
+
+        if (roundId && !processedRounds.includes(roundId)) {
+            const total = Number(scoreCard.dataset.total) || 0;
+            const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
+            const roundRecord = {
+                date: new Date().toISOString(),
+                score,
+                total,
+                percentage,
+                category,
+                difficulty,
+            };
+
+            progress.gamesPlayed += 1;
+            progress.totalCorrect += score;
+            progress.totalQuestions += total;
+            progress.history = Array.isArray(progress.history) ? progress.history : [];
+            progress.history.unshift(roundRecord);
+            progress.history = progress.history.slice(0, 10);
+
+            if (
+                !progress.bestScore ||
+                percentage > progress.bestScore.percentage ||
+                (percentage === progress.bestScore.percentage && score > progress.bestScore.score)
+            ) {
+                progress.bestScore = {
+                    score,
+                    total,
+                    percentage,
+                    category,
+                    difficulty,
+                };
+            }
+
+            processedRounds.push(roundId);
+            processedRounds = processedRounds.slice(-100);
+            window.localStorage.setItem(progressKey, JSON.stringify(progress));
+            window.localStorage.setItem(processedKey, JSON.stringify(processedRounds));
+        }
+
         // Work out which achievements this round has earned.
         const total = Number(scoreCard.dataset.total);
         const achievementKey = "wordmatch-achievements";
