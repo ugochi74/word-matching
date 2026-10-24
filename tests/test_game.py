@@ -102,6 +102,15 @@ class TestScoreAnswers(unittest.TestCase):
         self.assertEqual(results[2]["streak"], 0)
         self.assertEqual(results[3]["streak"], 1)
 
+    def test_each_category_has_at_least_ten_words(self):
+        categories = {word["category"] for word in WORDS}
+
+        for category in categories:
+            category_words = [
+                word for word in WORDS if word["category"] == category
+            ]
+            self.assertGreaterEqual(len(category_words), 10, category)
+
 
 if __name__ == "__main__":
     unittest.main()
