@@ -21,6 +21,14 @@ class TestGameRoutes(unittest.TestCase):
         self.assertIn(b"Word", response.data)
         self.assertIn(b"Challenge", response.data)
 
+    def test_home_page_shows_player_progress_dashboard(self):
+        response = self.client.get("/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Your learning progress", response.data)
+        self.assertIn(b"progress-games-played", response.data)
+        self.assertIn(b"progress-recent-games", response.data)
+
     def test_game_page_starts_a_round(self):
         response = self.client.get("/game")
 
@@ -98,6 +106,17 @@ class TestGameRoutes(unittest.TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.headers["Location"].endswith("/"))
+
+    def test_results_include_round_id_for_progress_tracking(self):
+        self.client.get("/game")
+        with self.client.session_transaction() as game_session:
+            round_words = list(game_session["round_words"])
+
+        answers = {word_id: word_id for word_id in round_words}
+        response = self.client.post("/game", data=answers, follow_redirects=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'data-round-id=', response.data)
 
     def test_submitting_correct_answers_shows_results(self):
         self.client.get("/game")
