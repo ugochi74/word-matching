@@ -69,12 +69,12 @@ if (scoreCard && personalBest) {
         }
 
         if (roundId && !processedRounds.includes(roundId)) {
-            const total = Number(scoreCard.dataset.total) || 0;
-            const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
+            const trackedTotal = Number(scoreCard.dataset.total) || 0;
+            const percentage = trackedTotal > 0 ? Math.round((score / trackedTotal) * 100) : 0;
             const roundRecord = {
                 date: new Date().toISOString(),
                 score,
-                total,
+                total: trackedTotal,
                 percentage,
                 category,
                 difficulty,
@@ -82,7 +82,7 @@ if (scoreCard && personalBest) {
 
             progress.gamesPlayed += 1;
             progress.totalCorrect += score;
-            progress.totalQuestions += total;
+            progress.totalQuestions += trackedTotal;
             progress.history = Array.isArray(progress.history) ? progress.history : [];
             progress.history.unshift(roundRecord);
             progress.history = progress.history.slice(0, 10);
@@ -94,7 +94,7 @@ if (scoreCard && personalBest) {
             ) {
                 progress.bestScore = {
                     score,
-                    total,
+                    total: trackedTotal,
                     percentage,
                     category,
                     difficulty,
