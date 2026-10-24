@@ -19,6 +19,7 @@
 ## Next improvements
 
 - [ ] Run the expanded automated test suite locally and fix any failures.
+- [x] Add a browser-saved player progress dashboard with games played, average accuracy, best score, and recent games.
 - [ ] Test the countdown and automatic submission on desktop and mobile browsers.
 - [x] Expand the vocabulary with additional words across all three categories; continue adding more over time.
 - [x] Add optional sound effects, a sound toggle, answer-selection feedback, and result animations.
